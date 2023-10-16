@@ -12,12 +12,12 @@ spring:
         - id: tenants-service
           uri: lb://tenants-service
           predicates:
-            - Path=/tenants/**
+            - Path=/api/tenants/**
           filters:
-            - RewritePath=/tenants/(?<path>.*), /$\{path}
+            - RewritePath=/api/tenants(?<path>.*), /$\{path}
         - id: metastore-service
           uri: lb://metastore-service
           predicates:
-            - Path=/metastore/**
+            - Path=/api/metastore/**
           filters:
-            - RewritePath=/metastore/(?<path>.*), /$\{path}
+            - RewritePath=/api/metastore(?<path>.*), /$\{path}

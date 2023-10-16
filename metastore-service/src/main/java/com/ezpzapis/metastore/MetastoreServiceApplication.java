@@ -17,13 +17,9 @@ public class MetastoreServiceApplication {
 		SpringApplication.run(MetastoreServiceApplication.class, args);
 	}
 
-	@GetMapping("/")
+	@GetMapping("/service")
 	public Mono<String> home() {
 		return Mono.just("Metastore Service");
 	}
 
-	@Bean
-	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		return http.authorizeExchange().anyExchange().permitAll().and().build();
-	}
 }

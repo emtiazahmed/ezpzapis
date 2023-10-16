@@ -12,6 +12,7 @@ services:
     command: 'agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0'
   mongo:
     image: mongo:latest
+    restart: always
     ports:
       - '27017:27017'
     volumes:
@@ -26,8 +27,8 @@ services:
       - '8080:8080'
     networks:
       ezpz-cluster:
-    links:
-      - "consul"
+    depends_on:
+      - consul
     environment:
       - spring.profiles.active=docker
       - spring.cloud.consul.host=consul
@@ -39,8 +40,9 @@ services:
       - '8082:8082'
     networks:
       ezpz-cluster:
-    links:
-      - "consul"
+    depends_on:
+      - consul
+      - mongo
     environment:
       - spring.profiles.active=docker
       - spring.cloud.consul.host=consul

@@ -5,6 +5,11 @@ spring:
     name: tenants-service
   config:
     import: "optional:consul:"
+  data:
+    mongodb:
+      host: "localhost"
+      port: 27017
+      database: "ezpzapis"
 management:
   endpoints:
     web:
@@ -24,11 +29,16 @@ spring:
     consul:
       host: host.docker.internal
       port: 8500
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: always
+  data:
+    mongodb:
+      host: mongo
+      port: 27017
+      database: "ezpzapis"
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    health:
+#      show-details: always
