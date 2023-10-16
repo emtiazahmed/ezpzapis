@@ -34,7 +34,6 @@ yarn-error.log*
 # local .env files
 .env.local*
 
-HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
