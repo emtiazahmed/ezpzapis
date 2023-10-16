@@ -1,0 +1,9 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: metastore-service
+  cloud:
+    consul:
+      config:
+        enabled: false

@@ -1,0 +1,34 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: metastore-service
+  config:
+    import: "optional:consul:"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+---
+server:
+  port: 8081
+spring:
+  profiles: docker
+  application:
+    name: metastore-service
+  cloud:
+    consul:
+      host: host.docker.internal
+      port: 8500
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  consul:
+    image: hashicorp/consul:latest
+    ports:
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+    networks:
+      ezpz-cluster:
+    command: 'agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0'
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo:/data/db
+    networks:
+      ezpz-cluster:
+  api-gateway:
+    image: 'ezpzapis/api-gateway'
+    container_name: 'api-gateway'
+    restart: on-failure
+    ports:
+      - '8080:8080'
+    networks:
+      ezpz-cluster:
+    links:
+      - "consul"
+    environment:
+      - spring.profiles.active=docker
+      - spring.cloud.consul.host=consul
+  tenants-service:
+    image: 'ezpzapis/tenants-service'
+    container_name: 'tenants-service'
+    restart: on-failure
+    ports:
+      - '8082:8082'
+    networks:
+      ezpz-cluster:
+    links:
+      - "consul"
+    environment:
+      - spring.profiles.active=docker
+      - spring.cloud.consul.host=consul
+  metastore-service:
+    image: 'ezpzapis/metastore-service'
+    container_name: 'metastore-service'
+    restart: on-failure
+    ports:
+      - '8081:8081'
+    networks:
+      ezpz-cluster:
+    links:
+      - "consul"
+    environment:
+      - spring.profiles.active=docker
+      - spring.cloud.consul.host=consul
+      - server.port=8081
+networks:
+  ezpz-cluster:
+volumes:
+  mongo:
+    driver:
+      local

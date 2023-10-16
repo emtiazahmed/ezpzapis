@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    consul:
+      config:
+        enabled: false
+    gateway:
+      routes:
+        - id: tenants-service
+          uri: lb://tenants-service
+          predicates:
+            - Path=/tenants/**
+          filters:
+            - RewritePath=/tenants/(?<path>.*), /$\{path}
+        - id: metastore-service
+          uri: lb://metastore-service
+          predicates:
+            - Path=/metastore/**
+          filters:
+            - RewritePath=/metastore/(?<path>.*), /$\{path}
