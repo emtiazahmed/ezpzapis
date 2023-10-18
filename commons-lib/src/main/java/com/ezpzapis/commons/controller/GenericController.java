@@ -8,6 +8,7 @@ import com.github.victools.jsonschema.generator.SchemaGenerator;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @SuppressWarnings("ALL")
-@Log4j2
+@Slf4j
 public class GenericController<T extends GenericEntity<T>, S extends GenericService<T>>{
 
 	protected S service;
@@ -48,7 +49,7 @@ public class GenericController<T extends GenericEntity<T>, S extends GenericServ
 										 @RequestParam(value = "filter", required = false) String filter,
 										 @Parameter(description = "Pagination and Sorting parameters", required = false)
 										 Pageable page) {
-
+		log.info("Controller.findByQueryWithFields");
 		List<String> fieldsList = StringUtils.isNotBlank(fields) ? List.of(fields.split(",")) : List.of();
 		return service.findByQueryWithFields(fieldsList, filter, page);
 	}

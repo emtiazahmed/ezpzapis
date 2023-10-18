@@ -10,13 +10,63 @@ services:
     networks:
       ezpz-cluster:
     command: 'agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0'
-  mongo:
+  mongo-server:
     image: mongo:latest
+    container_name: 'mongo-server'
     restart: always
+    labels:
+      org.springframework.boot.service-connection: mongo-server
     ports:
       - '27017:27017'
     volumes:
       - mongo:/data/db
+    networks:
+      ezpz-cluster:
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - '9411:9411'
+    networks:
+      ezpz-cluster:
+  loki:
+    image: grafana/loki:2.9.2
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      ezpz-cluster:
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        mkdir -p /etc/grafana/provisioning/datasources
+        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
+        apiVersion: 1
+        datasources:
+        - name: Loki
+          type: loki
+          access: proxy
+          orgId: 1
+          url: http://loki:3100
+          basicAuth: false
+          isDefault: true
+          version: 1
+          editable: false
+        EOF
+        /run.sh
+    depends_on:
+      - loki
+    ports:
+      - "3000:3000"
     networks:
       ezpz-cluster:
   api-gateway:
@@ -32,6 +82,7 @@ services:
     environment:
       - spring.profiles.active=docker
       - spring.cloud.consul.host=consul
+      - spring.application.name=api-gateway
   tenants-service:
     image: 'ezpzapis/tenants-service'
     container_name: 'tenants-service'
@@ -42,10 +93,18 @@ services:
       ezpz-cluster:
     depends_on:
       - consul
-      - mongo
+      - mongo-server
+      - loki
+    links:
+      - zipkin
+      - consul
+      - mongo-server
     environment:
       - spring.profiles.active=docker
+      - spring.data.mongodb.host=mongo-server
       - spring.cloud.consul.host=consul
+      - management.zipkin.tracing.endpoint=http://zipkin:9411/api/v2/spans
+      - LOKI_HOST=loki
   metastore-service:
     image: 'ezpzapis/metastore-service'
     container_name: 'metastore-service'
@@ -59,7 +118,9 @@ services:
     environment:
       - spring.profiles.active=docker
       - spring.cloud.consul.host=consul
-      - server.port=8081
+      - spring.data.mongodb.host=mongo-server
+      - spring.application.name=metastore-service
+      #- server.port=8081
 networks:
   ezpz-cluster:
 volumes:

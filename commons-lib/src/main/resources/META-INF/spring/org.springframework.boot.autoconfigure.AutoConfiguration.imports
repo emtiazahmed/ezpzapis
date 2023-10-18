@@ -1,3 +1,5 @@
 com.ezpzapis.commons.spring.config.SecurityConfig
 com.ezpzapis.commons.spring.config.SchemaGeneratorConfig
 com.ezpzapis.commons.spring.config.WebConfig
+com.ezpzapis.commons.spring.config.MongoConfig
+com.ezpzapis.commons.spring.config.ObserveConfig
