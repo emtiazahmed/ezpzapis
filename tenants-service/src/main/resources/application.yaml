@@ -9,3 +9,20 @@ spring:
     consul:
       config:
         enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, prometheus, env, configprops, beans
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true

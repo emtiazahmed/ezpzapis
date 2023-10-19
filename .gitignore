@@ -66,3 +66,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## Tempo data directories
+
+docker/tempo/tempo-data
