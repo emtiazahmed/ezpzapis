@@ -6,10 +6,10 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['prometheus:9090']
-  - job_name: 'api-gateway'
-    metrics_path: '/actuator/prometheus'
+  - job_name: 'krakend'
+    metrics_path: '/metrics'
     static_configs:
-      - targets: ['api-gateway:8080'] ## only for demo purposes don't use host.docker.internal in production
+      - targets: ['krakend:9091'] ## only for demo purposes don't use host.docker.internal in production
   - job_name: 'metastore-service'
     metrics_path: '/actuator/prometheus'
     static_configs:

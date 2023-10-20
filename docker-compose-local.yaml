@@ -70,9 +70,47 @@ services:
       - "3000:3000"
     networks:
       ezpz-cluster:
+  keycloak:
+    image: jboss/keycloak:latest
+    restart: on-failure
+    command:
+      - "-b"
+      - "0.0.0.0"
+      - "-Dkeycloak.migration.action=import"
+      - "-Dkeycloak.migration.provider=dir"
+      - "-Dkeycloak.migration.dir=/config/"
+      - "-Dkeycloak.migration.strategy=IGNORE_EXISTING"
+    volumes:
+      - ./config:/config/
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=password
+      - DB_VENDOR=postgres
+      - DB_USER=admin
+      - DB_PASSWORD=password
+      - DB_ADDR=keycloak-db
+      - DB_PORT=5432
+      - DB_DATABASE=keycloakdb
+    ports:
+      - "8090:8080"
+    depends_on:
+      - keycloak-db
+    networks:
+      ezpz-cluster:
+  keycloak-db:
+    image: postgres:16.0
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: keycloakdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      ezpz-cluster:
 networks:
   ezpz-cluster:
 volumes:
+  pgdata:
   mongo:
     driver:
       local

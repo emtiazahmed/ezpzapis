@@ -19,7 +19,6 @@
         <module>commons-lib</module>
         <module>tenants-service</module>
         <module>metastore-service</module>
-        <module>api-gateway</module>
     </modules>
 
 	<properties>
