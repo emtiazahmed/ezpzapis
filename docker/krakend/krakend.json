@@ -2,6 +2,21 @@
   "$schema": "https://www.krakend.io/schema/krakend.json",
   "version": 3,
   "name": "KrakenD - API Gateway",
+  "endpoints": [
+    {
+      "endpoint": "/users",
+      "backend": [
+        {
+          "url_pattern": "/api/tenants/customers",
+          "sd": "dns",
+          "host": [
+            "tenants-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    }
+  ],
   "extra_config": {
     "plugin/http-server": {
       "name": [
