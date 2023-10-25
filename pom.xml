@@ -16,6 +16,7 @@
 	<description>EzPz APIs - Built for Scale</description>
 
     <modules>
+        <module>website</module>
         <module>commons-lib</module>
         <module>tenants-service</module>
         <module>metastore-service</module>

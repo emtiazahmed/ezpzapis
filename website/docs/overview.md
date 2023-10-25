@@ -8,26 +8,29 @@ Ezpz APIs is a boilerplate template for modern, scalable and cloud-ready microse
 
 We know It's hard to build microservices that are production grade, and it takes a lot of time to harden them and make everything work together. EzPz APIs uses latest stable frameworks and libraries. If you're building microservices, it will provide you with an excellent start with all the best practices already implemented, ready to be customized and extended.
 
+![High-level Architecture](./img/high-level-architecture.png)
+
+
 ### Our Tech-stack:
 - **Microservices Framework**
-  - Spring Boot 3.1.4
-    - Webflux
-    - Spring Security
+  - [Spring Boot 3.1.4](https://spring.io/projects/spring-boot)
+    - [Webflux](https://docs.spring.io/spring-framework/reference/web/webflux.html)
+    - [Spring Security](https://spring.io/projects/spring-security)
 - **Datastore**
-  - MongoDB
+  - [MongoDB](https://www.mongodb.com/)
 - **Service Discovery**
-   - Consul
+   - [Consul](https://www.consul.io/)
 - **API Gateway**
-   - Krakend
+   - [Kong](https://konghq.com/products/kong-gateway)
 - **Identity Management, AuthN & AuthZ**
-  - Keycloak
+  - [Keycloak](https://www.keycloak.org/)
 - **App / User Interface**
-  - Quasar Framework (UI) - based on Vue3
+  - [Quasar Framework (UI) - based on Vue3](https://quasar.dev/)
 - **Observability**
-  - Grafana (Dashboards)
-  - Loki (Log Aggregation)
-  - Prometheus (Metrics)
-  - Tempo (Tracing)
+  - [Grafana (Dashboards)](https://grafana.com/grafana/)
+  - [Loki (Log Aggregation)](https://grafana.com/products/cloud/logs/)
+  - [Prometheus (Metrics)](https://prometheus.io/)
+  - [Tempo (Tracing)](https://grafana.com/oss/tempo/)
 
 ## Getting Started
 
