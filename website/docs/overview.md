@@ -8,8 +8,6 @@ Ezpz APIs is a boilerplate template for modern, scalable and cloud-ready microse
 
 We know It's hard to build microservices that are production grade, and it takes a lot of time to harden them and make everything work together. EzPz APIs uses latest stable frameworks and libraries. If you're building microservices, it will provide you with an excellent start with all the best practices already implemented, ready to be customized and extended.
 
-![High-level Architecture](./img/high-level-architecture.png)
-
 
 ### Our Tech-stack:
 - **Microservices Framework**
