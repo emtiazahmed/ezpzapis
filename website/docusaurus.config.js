@@ -70,14 +70,14 @@ const config = {
         title: 'EzPz APIs',
         logo: {
           alt: 'EzPz APIs',
-          src: 'img/logo.png',
+          src: 'img/logo.jpeg',
         },
         items: [
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Docs',
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {

@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  consul:
+  consul: # Service Discovery
     image: hashicorp/consul:latest
     container_name: consul
     ports:
@@ -11,7 +11,7 @@ services:
     networks:
       ezpz-cluster:
     command: 'agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0'
-  mongo-server:
+  mongo-server: # NoSQL Datastore
     image: mongo:latest
     container_name: 'mongo-server'
     restart: always
@@ -24,7 +24,7 @@ services:
     networks:
       ezpz-cluster:
 
-  tempo:
+  tempo: # Metrics
     image: grafana/tempo:2.2.2
     container_name: tempo
     command: [ "-config.file=/etc/tempo.yml" ]
@@ -36,7 +36,7 @@ services:
       - "9411:9411" # zipkin
     networks:
       ezpz-cluster:
-  loki:
+  loki: # Log aggregator
     image: grafana/loki:2.9.2
     container_name: loki
     ports:
@@ -44,7 +44,7 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       ezpz-cluster:
-  prometheus:
+  prometheus: # Metrics DB
     image: prom/prometheus:v2.46.0
     container_name: prometheus
     command:
@@ -56,7 +56,7 @@ services:
       - "9090:9090"
     networks:
       ezpz-cluster:
-  grafana:
+  grafana: # Dashboards
     image: grafana/grafana:10.1.0
     container_name: grafana
     volumes:
@@ -70,7 +70,7 @@ services:
       - "3000:3000"
     networks:
       ezpz-cluster:
-  keycloak:
+  keycloak: # Identity Management System
     image: jboss/keycloak:latest
     restart: on-failure
     command:
@@ -89,7 +89,7 @@ services:
       - DB_USER=admin
       - DB_PASSWORD=password
       - DB_ADDR=keycloak-db
-      - DB_PORT=5432
+      - DB_PORT=5433
       - DB_DATABASE=keycloakdb
     ports:
       - "8090:8080"
@@ -103,6 +103,9 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: keycloakdb
+    ports:
+      - "5433:5433"
+    command: -p 5433
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:

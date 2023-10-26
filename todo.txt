@@ -1,0 +1,26 @@
+APIs
+------------------
+
+ezpzapis.io
+  - docs
+  - blog
+  - app
+  - cockpit
+  - access-management/
+  - api
+    - provisioning/
+    - terminal/
+      - imports/
+      - exports/
+    - customers/ (GET, POST)
+      - {customerId} (GET, PUT, POST, PATCH, DELETE)
+        - subscriptions/ (GET, POST)
+          - {subscriptionId} (GET, PUT, POST, PATCH, DELETE)
+    - users/
+      - {userId}
+        - GET, PUT, POST, PATCH, DELETE
+
+
+
+client : api-gateway-client
+secret : i1BM3k6Jkte5XYWEMaQUAGdHFmuME9cd

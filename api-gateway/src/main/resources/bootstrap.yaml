@@ -1,0 +1,44 @@
+server:
+  port: 8080
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoConfiguration
+  application:
+    name: api-gateway
+  config:
+    import: "optional:consul:"
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8090/auth/realms/ezpzapis
+        registration:
+          api-gateway-client:
+            provider: keycloak
+            client-id: api-gateway-client
+            client-secret: i1BM3k6Jkte5XYWEMaQUAGdHFmuME9cd
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+---
+server:
+  port: 8080
+spring:
+  profiles: docker
+  cloud:
+    consul:
+      host: host.docker.internal
+      port: 8500
+management:
+  zipkin:
+    tracing:
+      endpoint: http://tempo:9411/api/v2/spans

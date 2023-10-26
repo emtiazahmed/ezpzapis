@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.4</version>
+		<version>3.1.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ezpzapis</groupId>
@@ -20,6 +20,7 @@
         <module>commons-lib</module>
         <module>tenants-service</module>
         <module>metastore-service</module>
+        <module>api-gateway</module>
     </modules>
 
 	<properties>
@@ -28,8 +29,8 @@
 		<antlr4.plugin.version>4.13.0</antlr4.plugin.version>
         <antlr4.version>4.13.0</antlr4.version>
         <lombok.version>1.18.30</lombok.version>
-        <spring.boot.version>3.1.4</spring.boot.version>
-        <spring.cloud.version>4.0.3</spring.cloud.version>
+        <spring.boot.version>3.1.5</spring.boot.version>
+        <spring.cloud.version>4.0.6</spring.cloud.version>
         <victools.version>[4.21.0,5.0.0)</victools.version>
         <json.patch.version>1.13</json.patch.version>
         <apache.commons.version>3.13.0</apache.commons.version>
@@ -38,13 +39,22 @@
 	</properties>
     <dependencyManagement>
         <dependencies>
-            <!--dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+                <version>4.0.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
+                <version>2022.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency-->
+            </dependency>
             <!--dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-tracing-bom</artifactId>
@@ -87,6 +97,7 @@
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>

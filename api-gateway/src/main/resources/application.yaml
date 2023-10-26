@@ -1,0 +1,64 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoConfiguration
+  cloud:
+    consul:
+      config:
+        enabled: false
+    gateway:
+      routes:
+        -
+          id: tenants-service
+          uri: lb://tenants-service
+          predicates:
+            - Path=/api/tenants/**
+          filters:
+            - StripPrefix=2
+        - id: metastore-service
+          uri: lb://metastore-service
+          predicates:
+            - Path=/api/metastore/**
+          filters:
+            - StripPrefix=2
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8090/auth/realms/ezpzapis
+        registration:
+          api-gateway-client:
+            provider: keycloak
+            client-id: api-gateway-client
+            client-secret: i1BM3k6Jkte5XYWEMaQUAGdHFmuME9cd
+            authorization-grant-type: authorization_code
+            redirect-uri: '{baseUrl}/login/oauth2/code/keycloak'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, prometheus, env, configprops, beans
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: DEBUG
